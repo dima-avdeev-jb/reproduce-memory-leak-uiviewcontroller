@@ -1,6 +1,6 @@
 import SwiftUI
 
-@main
+/*@main
 struct iOSApp: App {
 	var body: some Scene {
 		WindowGroup {
@@ -8,3 +8,6 @@ struct iOSApp: App {
 		}
 	}
 }
+*/
+
+

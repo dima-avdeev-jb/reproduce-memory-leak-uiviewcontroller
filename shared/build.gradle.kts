@@ -23,6 +23,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-client-core:2.3.5")
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material)
