@@ -1,10 +1,17 @@
 import MapboxMaps
 import UIKit
 
+var instanceCounter = 0
+var existing = [] as Set<Int>
+
 class MapWidget : UIView {
    var mapView: MapView? = nil
-
+    let instanceId: Int
    override init(frame: CGRect) {
+       instanceId = instanceCounter
+       existing.insert(instanceId)
+       print("init", instanceId, existing)
+       instanceCounter += 1
       super.init(frame: frame)
       setupLayout()
    }
@@ -12,6 +19,11 @@ class MapWidget : UIView {
    required init?(coder: NSCoder) {
       fatalError("init(coder:) has not been implemented")
    }
+    
+    deinit {
+        existing.remove(instanceId)
+        print("deinit", instanceId, existing)
+    }
 
    private func setupLayout() {
       print("MapWidget setupLayout")
