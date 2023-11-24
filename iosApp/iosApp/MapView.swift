@@ -1,7 +1,7 @@
 import UIKit
 
 var instanceCounter = 0
-var existing = [] as Set<Int>
+var aliveInstanceIds = [] as Set<Int>
 
 class MapWidget : UIView {
     let instanceId: Int
@@ -21,8 +21,8 @@ class MapWidget : UIView {
         }
         
         instanceId = instanceCounter
-        existing.insert(instanceId)
-        print("init", instanceId, existing)
+        aliveInstanceIds.insert(instanceId)
+        print("init \(instanceId). Currently alive: \(aliveInstanceIds)")
         instanceCounter += 1
         super.init(frame: frame)
     }
@@ -35,7 +35,7 @@ class MapWidget : UIView {
         mapStuff.forEach { it in
             it.deallocate()
         }
-        existing.remove(instanceId)
-        print("deinit", instanceId, existing)
+        aliveInstanceIds.remove(instanceId)
+        print("deinit \(instanceId). Currently alive: \(aliveInstanceIds)")
     }
 }
