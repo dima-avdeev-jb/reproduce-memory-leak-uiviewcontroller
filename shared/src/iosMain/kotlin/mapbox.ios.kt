@@ -1,6 +1,8 @@
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -13,33 +15,52 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIView
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import platform.UIKit.UIWindow
 
 @OptIn(ExperimentalForeignApi::class)
-fun createMapboxVC(
+fun makeLeakingView(
    createMapView: () -> UIView
 ) = ComposeUIViewController {
    val mapView = remember { createMapView() }
-   // perhaps solution   is to remember below
-   //val myOnBack = remember { onBack }
+
    val scope = rememberCoroutineScope()
+
    Column {
-      TopAppBar(
-         modifier = Modifier.padding(top = 50.dp),
-         title = { Text("Title") },
-         navigationIcon = {
-            IconButton(
-               onClick = { scope.launch { backNavigateChannel.send("") } }
-            ) {
-               Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
-            }
-         },
-      )
+      UIKitView(factory = {
+         mapView
+      }, modifier = Modifier.weight(0.5f))
+
+      IconButton(
+         modifier = Modifier.weight(0.5f),
+         onClick = { scope.launch { backNavigateChannel.send("") } }
+      ) {
+         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+      }
+   }
+}
+
+@OptIn(ExperimentalForeignApi::class)
+fun makeNonLeakingView(
+   createMapView: () -> UIView
+) = ComposeUIViewController {
+   val mapView = remember { createMapView() }
+
+   val scope = rememberCoroutineScope()
+
+   Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
       UIKitView(factory = {
          mapView
       }, modifier = Modifier.fillMaxSize())
+
+      IconButton(
+         onClick = { scope.launch { backNavigateChannel.send("") } }
+      ) {
+         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+      }
+
    }
 }

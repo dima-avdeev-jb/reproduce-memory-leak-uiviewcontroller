@@ -8,7 +8,7 @@ class DefaultViewController: UIViewController {
         view.backgroundColor = .white
        
        BackNavigateKt.backNavigateFlow.watch { [weak self] _ in
-          self?.navigationController?.popViewController(animated: true)
+          self?.navigationController?.popViewController(animated: false)
        }
 
         let openSecondVCButton = UIButton(type: .system)
@@ -23,16 +23,17 @@ class DefaultViewController: UIViewController {
         ])
     }
 
+
     @objc func openSecondVC() {
-       // switch default navbar visibility to fix mem leak. for some reason SecondViewController memory
-       // gets freed if back navigation occurs through default navigation bar
-       navigationController?.setNavigationBarHidden(true, animated: false)
-       //navigationController?.setNavigationBarHidden(false, animated: false)
-       let mapboxVC = Mapbox_iosKt.createMapboxVC(
-         createMapView: { [weak self] in 
-            MapWidget(frame: self!.view.frame) }
-       )
-        let secondViewController = SecondViewController()
-        navigationController?.pushViewController(mapboxVC, animated: true)
+        // switch default navbar visibility to fix mem leak. for some reason SecondViewController memory
+        // gets freed if back navigation occurs through default navigation bar
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        let mapboxVC = Mapbox_iosKt.makeLeakingView(
+            createMapView: { [weak self] in
+                MapWidget(frame: self!.view.frame)
+             
+            }
+        )
+        navigationController?.pushViewController(mapboxVC, animated: false)
     }
 }
