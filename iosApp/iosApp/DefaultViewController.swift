@@ -25,9 +25,10 @@ class DefaultViewController: UIViewController {
 
 
     @objc func openSecondVC() {
-        // switch default navbar visibility to fix mem leak. for some reason SecondViewController memory
-        // gets freed if back navigation occurs through default navigation bar
         navigationController?.setNavigationBarHidden(true, animated: false)
+        // uncomment the one you want to test
+        
+//         let mapboxVC = Mapbox_iosKt.makeNonLeakingView(
         let mapboxVC = Mapbox_iosKt.makeLeakingView(
             createMapView: { [weak self] in
                 MapWidget(frame: self!.view.frame)
