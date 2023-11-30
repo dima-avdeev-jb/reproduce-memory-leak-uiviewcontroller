@@ -30,8 +30,6 @@ fun makeLeakingView(
 ) = ComposeUIViewController {
    val mapView = remember { createMapView() }
 
-   val scope = rememberCoroutineScope()
-
    Column {
       UIKitView(factory = {
          mapView
@@ -52,8 +50,6 @@ fun makeNonLeakingView(
    pop: () -> Unit
 ) = ComposeUIViewController {
    val mapView = remember { createMapView() }
-
-   val scope = rememberCoroutineScope()
 
    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
       UIKitView(factory = {
