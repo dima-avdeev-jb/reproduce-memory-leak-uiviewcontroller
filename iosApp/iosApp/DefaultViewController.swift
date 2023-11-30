@@ -6,10 +6,6 @@ class DefaultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-       
-       BackNavigateKt.backNavigateFlow.watch { [weak self] _ in
-          self?.navigationController?.popViewController(animated: false)
-       }
 
         let openSecondVCButton = UIButton(type: .system)
         openSecondVCButton.setTitle("Open Second View Controller", for: .normal)
@@ -32,9 +28,12 @@ class DefaultViewController: UIViewController {
         let mapboxVC = Mapbox_iosKt.makeLeakingView(
             createMapView: { [weak self] in
                 MapWidget(frame: self!.view.frame)
-             
+            },
+            pop: { [weak self] in
+                self?.navigationController?.popViewController(animated: false)
             }
         )
+        
         navigationController?.pushViewController(mapboxVC, animated: false)
     }
 }
