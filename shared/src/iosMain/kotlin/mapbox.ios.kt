@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -45,7 +46,28 @@ fun makeLeakingView(
 }
 
 @OptIn(ExperimentalForeignApi::class)
-fun makeNonLeakingView(
+fun makeNonLeakingView1(
+   createMapView: () -> UIView,
+   pop: () -> Unit
+) = ComposeUIViewController {
+   val mapView = remember { createMapView() }
+
+   Column(modifier = Modifier.fillMaxSize()) {
+      UIKitView(factory = {
+         mapView
+      }, modifier = Modifier.size(0.dp, 50.dp))
+
+      IconButton(
+         modifier = Modifier.fillMaxSize(),
+         onClick = pop
+      ) {
+         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
+      }
+   }
+}
+
+@OptIn(ExperimentalForeignApi::class)
+fun makeNonLeakingView2(
    createMapView: () -> UIView,
    pop: () -> Unit
 ) = ComposeUIViewController {
