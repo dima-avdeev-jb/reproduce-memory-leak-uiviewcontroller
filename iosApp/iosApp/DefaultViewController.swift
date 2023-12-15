@@ -17,6 +17,9 @@ class DefaultViewController: UIViewController {
             openSecondVCButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             openSecondVCButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openSecondVC))
+        view.addGestureRecognizer(tapGestureRecognizer)
     }
 
 
@@ -25,7 +28,7 @@ class DefaultViewController: UIViewController {
         // uncomment the one you want to test
         
 //         let mapboxVC = Mapbox_iosKt.makeNonLeakingView(
-        let mapboxVC = Mapbox_iosKt.makeLeakingView(
+        let mapboxVC = Mapbox_iosKt.makeView(
             createMapView: { [weak self] in
                 MapWidget(frame: self!.view.frame)
             },

@@ -1,5 +1,6 @@
+import androidx.compose.material.Text
 import androidx.compose.ui.window.ComposeUIViewController
 
-actual fun getPlatformName(): String = "iOS"
-
-fun MainViewController() = ComposeUIViewController { App() }
+fun MainViewController() = ComposeUIViewController {
+    Text("NOT SHOWN")
+}
